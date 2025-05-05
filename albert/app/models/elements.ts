@@ -23,10 +23,12 @@ export type ProgramElementJump = {
 }
 
 export const JumpComboMap = {
-  'Axel': ['A', 'Eu', 'Lo', 'T', 'Wz'],
-  'F': ['A', 'Eu', 'Lo', 'T', 'Wz' ],
+  'A': ['A', 'Eu', 'Lo', 'T', 'Wz'],
+  'F': ['A', 'Eu', 'Lo', 'T', 'Wz'],
+  'Lo': ['A', 'Eu', 'Lo', 'T', 'Wz'],
   'Lz': ['A', 'Eu', 'Lo', 'T', 'Wz'],
   'S': ['A', 'Eu', 'Lo', 'T', 'Wz'],
+  'T': ['A', 'Eu', 'Lo', 'T', 'Wz'],
   'Wz': ['A', 'Eu', 'Lo', 'T', 'Wz'],
   'Eu': ['S', "F"],
 }
