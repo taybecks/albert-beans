@@ -6,11 +6,10 @@ import ElementEntry from './ElementEntry'
 import { Box, Button } from '@mui/material';
 import { saveRunthrough } from '../services/Server';
 
-interface Props {}
 
-function AddRunthrough({}: Props) {
+function AddRunthrough() {
   const methods = useForm({})
-  const { getValues, handleSubmit } = methods
+  const { getValues } = methods
 
   return (
     <FormProvider {...methods}>

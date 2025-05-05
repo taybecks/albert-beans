@@ -1,9 +1,6 @@
 import React from 'react'
 import { PreBronze, JumpComboMap } from "../models/elements"; 
 import { Button } from '@mui/material'
-import { setMaxIdleHTTPParsers } from 'http';
-
-interface Props {}
 
 const jumpStarts = [
   'F',
@@ -13,10 +10,10 @@ const jumpStarts = [
   'T',
   'Wz'
 ]
-const program = {
-  spins: [1, 1],
-  jumpPasses: [3,2,1,1],
-}
+// const program = {
+//   spins: [1, 1],
+//   jumpPasses: [3,2,1,1],
+// }
 const confidenceLevels = {
   spins: {
     'USp': 50,
@@ -31,12 +28,13 @@ const confidenceLevels = {
     '1T': 80,
     '1F': 30,
     '1Eu': 60,
-  }
+  } as { [key: string]: number }
 }
 
-function SecretSauce({}: Props) {
+function SecretSauce() {
   const [max, setMax] = React.useState(0);
-  const [results, setResults] = React.useState<any>([]);
+  type JumpResult = { id: string; type: string; value: number };
+  const [results, setResults] = React.useState<JumpResult[]>([]);
 
   return (
     <div>
@@ -61,7 +59,7 @@ function SecretSauce({}: Props) {
 
   function stirTheSauce() {
     const jumpValues = getJumpValues();
-    const availableJumps = []
+    const availableJumps: JumpResult[] = []
     jumpStarts.forEach(jump => {
       availableJumps.push(...getJumpValueByType(jump, jumpValues));
     })
@@ -75,10 +73,17 @@ function SecretSauce({}: Props) {
       'Eu': 2
     }
 
-    calcJumps(availableJumps, jumpBudget, jumpValues, [], 0)
+    calcJumps({ availableJumps, jumpBudget, jumpValues, path: [], subtotal: 0 })
   }
 
-  function calcJumps(availableJumps, jumpBudget, jumpValues, path, subtotal) {
+  interface jumpProps {
+    availableJumps: JumpResult[],
+    jumpBudget: { [key: string]: number },
+    jumpValues: { [key: string]: { type: string; value: number } },
+    path: JumpResult[],
+    subtotal: number
+  }
+  function calcJumps({availableJumps, jumpBudget, jumpValues, path, subtotal}: jumpProps) {
     if (path.length === 7) {
       if (subtotal > max) {
         console.log(subtotal, path)
@@ -92,25 +97,25 @@ function SecretSauce({}: Props) {
         jumpBudget[jump.type] -= 1;
 
         const nextAvailableTypes = JumpComboMap[jump.type].filter(j => jumpBudget[j] > 0);
-        const nextAvailableJumps = [];
+        const nextAvailableJumps: JumpResult[] = [];
         nextAvailableTypes.forEach(j => {
           nextAvailableJumps.push(...getJumpValueByType(j, jumpValues));
         });
 
         const nextPath = [...path];
         nextPath.push(jump);
-        subtotal += jumpValues[jump.id].value ?? 0;
+        subtotal += jumpValues[jump.id].value;
 
-        calcJumps(nextAvailableJumps, jumpBudget, jumpValues, nextPath, subtotal);
+        calcJumps({ availableJumps: nextAvailableJumps, jumpBudget, jumpValues, path: nextPath, subtotal });
       })
     }
   }
 
   function getJumpValues() {
     const allJumps = PreBronze.jumps;
-    const jumpValues = {}
+    const jumpValues: { [key: string]: { type: string; value: number } } = {};
     Object.keys(allJumps).forEach(jump => {
-      const confidence = confidenceLevels.jumps[jump] ?? 0;
+      const confidence = confidenceLevels.jumps[jump as string] ?? 0;
       jumpValues[jump] = {
         type: allJumps[jump].type,
         value: allJumps[jump].value[0] * (confidence / 100)
@@ -120,8 +125,8 @@ function SecretSauce({}: Props) {
     return jumpValues
   }
 
-  function getJumpValueByType(type, jumpValues) {
-    const results = []
+  function getJumpValueByType(type: string, jumpValues: { [key: string]: { type: string; value: number } }) {
+    const results: JumpResult[] = [];
     Object.keys(jumpValues).forEach(j => {
       const jump = jumpValues[j];
       if(jump.type === type) {

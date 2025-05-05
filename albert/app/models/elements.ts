@@ -22,7 +22,11 @@ export type ProgramElementJump = {
   type: string;
 }
 
-export const JumpComboMap = {
+export type JumpMap = {
+  [key: string]: string[]
+}
+
+export const JumpComboMap: JumpMap = {
   'A': ['A', 'Eu', 'Lo', 'T', 'Wz'],
   'F': ['A', 'Eu', 'Lo', 'T', 'Wz'],
   'Lo': ['A', 'Eu', 'Lo', 'T', 'Wz'],
