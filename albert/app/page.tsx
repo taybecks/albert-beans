@@ -4,7 +4,7 @@ import { useState } from "react";
 import AddRunthrough from "./components/AddRunthrough";
 import SecretSauce from "./components/SecretSauce";
 import Link from "next/link"
-import { Button } from "@mui/material";
+import { Button } from "@/components/ui/button"
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -18,19 +18,19 @@ export default function Home() {
         </h1>
 
         <Link href="/wizard/level" className="mt-10">
-          <Button variant="contained" color="primary" size="large">
+          <Button className="bg-[#0f172a] text-white px-8 py-6 text-lg rounded-md">
             Start Building <span className="ml-2">→</span>
           </Button>
         </Link>
       </main>
 
       {/* Modal Button */}
-      <button
-        className="fixed bottom-6 right-6 bg-blue-600 text-white rounded-full px-6 py-3 shadow-lg hover:bg-blue-700 transition"
+      <Button
+        className="fixed bottom-6 right-6 bg-[#0f172a] text-white rounded-full px-6 py-3 shadow-lg hover:bg-[#0f172a] transition"
         onClick={() => setOpen(true)}
       >
         +
-      </button>
+      </Button>
 
       {/* Modal */}
       {open && (
