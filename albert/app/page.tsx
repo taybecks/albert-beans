@@ -5,6 +5,7 @@ import AddRunthrough from "./components/AddRunthrough";
 import SecretSauce from "./components/SecretSauce";
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Plus } from 'lucide-react';
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -26,10 +27,10 @@ export default function Home() {
 
       {/* Modal Button */}
       <Button
-        className="fixed bottom-6 right-6 bg-[#0f172a] text-white rounded-full px-6 py-3 shadow-lg hover:bg-[#0f172a] transition"
+        className="fixed bottom-6 right-6 bg-[#0f172a] text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-[#0f172a] transition"
         onClick={() => setOpen(true)}
       >
-        +
+        <Plus />
       </Button>
 
       {/* Modal */}
