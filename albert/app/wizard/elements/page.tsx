@@ -10,57 +10,67 @@ import Link from "next/link"
 import { ProgressBar } from "@components/progress-bar"
 import { X } from "lucide-react"
 
-// Sample data - in a real app this would be more extensive and categorized
-const jumpElements = [
-  { id: "triple-axel", name: "Triple Axel" },
-  { id: "triple-lutz", name: "Triple Lutz" },
-  { id: "triple-flip", name: "Triple Flip" },
-  { id: "triple-toe", name: "Triple Toe" },
-  { id: "triple-salchow", name: "Triple Salchow" },
-  { id: "double-axel", name: "Double Axel" },
-]
+import { LevelsMap } from "@/app/models/elements"
+import { useFormContext } from "react-hook-form"
 
-const spinElements = [
-  { id: "flying-sit-spin", name: "Flying Sit Spin" },
-  { id: "layback-spin", name: "Layback Spin" },
-  { id: "camel-spin", name: "Camel Spin" },
-  { id: "sit-spin", name: "Sit Spin" },
-  { id: "combination-spin", name: "Combination Spin" },
-]
-
-const stepElements = [
-  { id: "straight-line-step", name: "Straight Line Step Sequence" },
-  { id: "circular-step", name: "Circular Step Sequence" },
-  { id: "serpentine-step", name: "Serpentine Step Sequence" },
-]
 
 export default function ElementsPage() {
   const router = useRouter()
+  const { getValues, setValue, watch } = useFormContext()
+  const level = watch("level")
+  const availableElements = LevelsMap[level as keyof typeof LevelsMap]
   const [selectedElements, setSelectedElements] = useState<string[]>([])
+  const selectedElementsMap = watch("selectedElements")
   const [activeTab, setActiveTab] = useState("jumps")
 
-  const handleElementToggle = (elementId: string) => {
+  const allElements = []
+  const jumpElements = availableElements.jumps
+  const spinElements = availableElements.spins
+  const stepElements = availableElements.other
+  Object.keys(jumpElements).forEach(key => {
+    allElements.push(jumpElements[key])
+  })
+  Object.keys(spinElements).forEach(key => {
+    allElements.push(spinElements[key])
+  })
+  Object.keys(stepElements).forEach(key => {
+    allElements.push(stepElements[key])
+  })
+
+  const handleElementToggle = (elementId: string, type: string) => {
     if (selectedElements.includes(elementId)) {
       setSelectedElements(selectedElements.filter((id) => id !== elementId))
+      setValue("selectedElements", {
+        ...selectedElementsMap,
+        [type]: selectedElementsMap[type].filter((id) => id !== elementId),
+      })
     } else {
       setSelectedElements([...selectedElements, elementId])
+      setValue("selectedElements", {
+        ...selectedElementsMap,
+        [type]: [...selectedElementsMap[type], elementId],
+      })
     }
   }
 
-  const handleRemoveElement = (elementId: string) => {
+  const handleRemoveElement = (elementId: string, type: string) => {
     setSelectedElements(selectedElements.filter((id) => id !== elementId))
+    setValue("selectedElements", {
+      ...selectedElementsMap,
+      [type]: selectedElementsMap[type].filter((id) => id !== elementId),
+    })
   }
 
   const getElementNameById = (id: string) => {
-    const allElements = [...jumpElements, ...spinElements, ...stepElements]
     const element = allElements.find((el) => el.id === id)
-    return element ? element.name : id
+    return element ? element.label : id
   }
 
   const handleContinue = () => {
     if (selectedElements.length > 0) {
       // In a real app, you would save this to state management or localStorage
-      localStorage.setItem("selectedElements", JSON.stringify(selectedElements))
+      console.log(selectedElementsMap)
+      setValue("selectedElements", selectedElementsMap)
       router.push("/wizard/comfort")
     }
   }
@@ -112,14 +122,14 @@ export default function ElementsPage() {
 
           <TabsContent value="jumps" className="mt-0">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {jumpElements.map((element) => (
+              {Object.keys(jumpElements).map((elementId) => (
                 <Button
-                  key={element.id}
-                  variant={selectedElements.includes(element.id) ? "default" : "outline"}
-                  className={selectedElements.includes(element.id) ? "bg-[#0f172a]" : ""}
-                  onClick={() => handleElementToggle(element.id)}
+                  key={elementId}
+                  variant={selectedElements.includes(elementId) ? "default" : "outline"}
+                  className={selectedElements.includes(elementId) ? "bg-[#0f172a]" : ""}
+                  onClick={() => handleElementToggle(elementId, 'jumps')}
                 >
-                  {element.name}
+                  {jumpElements[elementId].label}
                 </Button>
               ))}
             </div>
@@ -127,14 +137,14 @@ export default function ElementsPage() {
 
           <TabsContent value="spins" className="mt-0">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {spinElements.map((element) => (
+              {Object.keys(spinElements).map((elementId) => (
                 <Button
-                  key={element.id}
-                  variant={selectedElements.includes(element.id) ? "default" : "outline"}
-                  className={selectedElements.includes(element.id) ? "bg-[#0f172a]" : ""}
-                  onClick={() => handleElementToggle(element.id)}
+                  key={elementId}
+                  variant={selectedElements.includes(elementId) ? "default" : "outline"}
+                  className={selectedElements.includes(elementId) ? "bg-[#0f172a]" : ""}
+                  onClick={() => handleElementToggle(elementId, 'spins')}
                 >
-                  {element.name}
+                  {spinElements[elementId].label}
                 </Button>
               ))}
             </div>
@@ -142,14 +152,14 @@ export default function ElementsPage() {
 
           <TabsContent value="steps" className="mt-0">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {stepElements.map((element) => (
+              {Object.keys(stepElements).map((elementId) => (
                 <Button
-                  key={element.id}
-                  variant={selectedElements.includes(element.id) ? "default" : "outline"}
-                  className={selectedElements.includes(element.id) ? "bg-[#0f172a]" : ""}
-                  onClick={() => handleElementToggle(element.id)}
+                  key={elementId}
+                  variant={selectedElements.includes(elementId) ? "default" : "outline"}
+                  className={selectedElements.includes(elementId) ? "bg-[#0f172a]" : ""}
+                  onClick={() => handleElementToggle(elementId, 'steps')}
                 >
-                  {element.name}
+                  {stepElements[elementId].label}
                 </Button>
               ))}
             </div>

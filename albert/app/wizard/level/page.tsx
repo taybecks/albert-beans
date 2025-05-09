@@ -7,10 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { ProgressBar } from "@components/progress-bar"
+import { useFormContext } from "react-hook-form"
 
 const levels = [
   {
-    id: "pre-bronze",
+    id: "preBronze",
     title: "Pre-Bronze",
     description: "For skaters who are just starting competitive skating with basic jumps and spins.",
   },
@@ -33,12 +34,13 @@ const levels = [
 
 export default function LevelPage() {
   const router = useRouter()
-  const [selectedLevel, setSelectedLevel] = useState<string | null>(null)
+  const { getValues, setValue, watch } = useFormContext()
+  const selectedLevel = watch("level")
 
   const handleContinue = () => {
     if (selectedLevel) {
       // In a real app, you would save this to state management or localStorage
-      localStorage.setItem("skatingLevel", selectedLevel)
+      setValue("level", selectedLevel)
       router.push("/wizard/elements")
     }
   }
@@ -71,7 +73,7 @@ export default function LevelPage() {
               className={`cursor-pointer transition-all ${
                 selectedLevel === level.id ? "border-2 border-black" : "border hover:border-gray-400"
               }`}
-              onClick={() => setSelectedLevel(level.id)}
+              onClick={() => setValue("level", level.id)}
             >
               <CardHeader className="pb-2">
                 <CardTitle>{level.title}</CardTitle>

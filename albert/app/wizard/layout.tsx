@@ -1,0 +1,29 @@
+'use client';
+
+import { FormProvider, useForm } from 'react-hook-form';
+
+export default function WizardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const methods = useForm({
+    defaultValues: {
+      level: '',
+      selectedElements: {
+        jumps: [],
+        spins: [],
+        steps: [],
+      },
+      comfortLevels: {},
+    }
+  });
+
+  return (
+    <FormProvider {...methods}>
+      <div className="min-h-screen p-4">
+        {children}
+      </div>
+    </FormProvider>
+  );
+}

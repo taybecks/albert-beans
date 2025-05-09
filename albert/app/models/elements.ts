@@ -2,7 +2,8 @@ export type Program = {
   spins: {
     [key: string]: ProgramElement
   },
-  jumps: ProgramJumps
+  jumps: ProgramJumps,
+  other: any
 }
 
 export type ProgramElement = {
@@ -156,4 +157,9 @@ export const PreBronze: Program = {
       type: 'F'
     },
   },
+  other: {}
+};
+
+export const LevelsMap = {
+  preBronze: PreBronze
 };

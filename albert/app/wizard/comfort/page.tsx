@@ -9,62 +9,49 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { ProgressBar } from "@components/progress-bar"
 
-// Sample data - in a real app this would be more extensive and categorized
-const allElements = {
-  "triple-axel": { name: "Triple Axel", category: "jumps" },
-  "triple-lutz": { name: "Triple Lutz", category: "jumps" },
-  "triple-flip": { name: "Triple Flip", category: "jumps" },
-  "triple-toe": { name: "Triple Toe", category: "jumps" },
-  "triple-salchow": { name: "Triple Salchow", category: "jumps" },
-  "double-axel": { name: "Double Axel", category: "jumps" },
-  "flying-sit-spin": { name: "Flying Sit Spin", category: "spins" },
-  "layback-spin": { name: "Layback Spin", category: "spins" },
-  "camel-spin": { name: "Camel Spin", category: "spins" },
-  "sit-spin": { name: "Sit Spin", category: "spins" },
-  "combination-spin": { name: "Combination Spin", category: "spins" },
-  "straight-line-step": { name: "Straight Line Step Sequence", category: "steps" },
-  "circular-step": { name: "Circular Step Sequence", category: "steps" },
-  "serpentine-step": { name: "Serpentine Step Sequence", category: "steps" },
-}
+import { LevelsMap } from "@/app/models/elements"
+import { useFormContext } from "react-hook-form"
+import { watch } from "fs"
 
 export default function ComfortPage() {
   const router = useRouter()
-  const [selectedElements, setSelectedElements] = useState<string[]>([])
-  const [comfortLevels, setComfortLevels] = useState<Record<string, number>>({})
+  const { getValues, setValue, watch } = useFormContext()
+  const level = localStorage.getItem("skatingLevel")
+  const program = LevelsMap[level as keyof typeof LevelsMap]
+  const availableElements = LevelsMap[level as keyof typeof LevelsMap]
+  const allElements = {
+    jumps: availableElements.jumps,
+    spins: availableElements.spins,
+    steps: availableElements.other,
+  }
+  const selectedElements = watch("selectedElements")
+  const comfortLevels = watch("comfortLevels")
   const [activeTab, setActiveTab] = useState("jumps")
 
   useEffect(() => {
-    // In a real app, you would get this from state management or localStorage
-    const storedElements = localStorage.getItem("selectedElements")
-    if (storedElements) {
-      const elements = JSON.parse(storedElements)
-      setSelectedElements(elements)
-
-      // Initialize comfort levels to 50 (middle of slider)
       const initialComfortLevels: Record<string, number> = {}
-      elements.forEach((elementId: string) => {
-        initialComfortLevels[elementId] = 50
+      selectedElements.jumps.forEach((id: string) => {
+        initialComfortLevels[id] = 50
       })
-      setComfortLevels(initialComfortLevels)
-    }
+      selectedElements.spins.forEach((id: string) => {
+        initialComfortLevels[id] = 50
+      })
+      selectedElements.steps.forEach((id: string) => {
+        initialComfortLevels[id] = 50
+      })
+      setValue("comfortLevels", initialComfortLevels)
   }, [])
 
   const handleComfortChange = (elementId: string, value: number[]) => {
-    setComfortLevels({
-      ...comfortLevels,
+    setValue("comfortLevels", {
+      ...getValues("comfortLevels"),
       [elementId]: value[0],
     })
   }
 
-  const getElementsByCategory = (category: string) => {
-    return selectedElements.filter(
-      (elementId) => allElements[elementId as keyof typeof allElements]?.category === category,
-    )
-  }
-
   const handleGenerateProgram = () => {
     // In a real app, you would save this to state management or localStorage
-    localStorage.setItem("comfortLevels", JSON.stringify(comfortLevels))
+    console.log(getValues("comfortLevels"))
     router.push("/wizard/program")
   }
 
@@ -90,13 +77,13 @@ export default function ComfortPage() {
           </TabsList>
 
           <TabsContent value="jumps" className="mt-0 space-y-8">
-            {getElementsByCategory("jumps").length === 0 ? (
+            {selectedElements.jumps.length === 0 ? (
               <p className="text-center text-gray-500 py-8">No jump elements selected</p>
             ) : (
-              getElementsByCategory("jumps").map((elementId) => (
+              selectedElements.jumps.map((elementId) => (
                 <div key={elementId} className="border rounded-lg p-6">
                   <h3 className="text-lg font-medium mb-6">
-                    {allElements[elementId as keyof typeof allElements]?.name}
+                    {program.jumps[elementId as keyof typeof program.jumps]?.label}
                   </h3>
                   <div className="px-4">
                     <div className="flex justify-between mb-2 text-sm text-gray-500">
@@ -116,13 +103,13 @@ export default function ComfortPage() {
           </TabsContent>
 
           <TabsContent value="spins" className="mt-0 space-y-8">
-            {getElementsByCategory("spins").length === 0 ? (
+            {selectedElements.spins.length === 0 ? (
               <p className="text-center text-gray-500 py-8">No spin elements selected</p>
             ) : (
-              getElementsByCategory("spins").map((elementId) => (
+              selectedElements.spins.map((elementId) => (
                 <div key={elementId} className="border rounded-lg p-6">
                   <h3 className="text-lg font-medium mb-6">
-                    {allElements[elementId as keyof typeof allElements]?.name}
+                    {program.spins[elementId as keyof typeof program.spins]?.label}
                   </h3>
                   <div className="px-4">
                     <div className="flex justify-between mb-2 text-sm text-gray-500">
@@ -142,13 +129,13 @@ export default function ComfortPage() {
           </TabsContent>
 
           <TabsContent value="steps" className="mt-0 space-y-8">
-            {getElementsByCategory("steps").length === 0 ? (
+            {selectedElements.steps.length === 0 ? (
               <p className="text-center text-gray-500 py-8">No step sequence elements selected</p>
             ) : (
-              getElementsByCategory("steps").map((elementId) => (
+              selectedElements.steps.map((elementId) => (
                 <div key={elementId} className="border rounded-lg p-6">
                   <h3 className="text-lg font-medium mb-6">
-                    {allElements[elementId as keyof typeof allElements]?.name}
+                    {program.other[elementId as keyof typeof program.other]?.label}
                   </h3>
                   <div className="px-4">
                     <div className="flex justify-between mb-2 text-sm text-gray-500">
