@@ -9,7 +9,7 @@ export default function WizardLayout({
 }) {
   const methods = useForm({
     defaultValues: {
-      level: '',
+      level: 'preBronze',
       selectedElements: {
         jumps: [],
         spins: [],
