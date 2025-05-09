@@ -16,7 +16,7 @@ import { watch } from "fs"
 export default function ComfortPage() {
   const router = useRouter()
   const { getValues, setValue, watch } = useFormContext()
-  const level = localStorage.getItem("skatingLevel")
+  const level = watch("level")
   const program = LevelsMap[level as keyof typeof LevelsMap]
   const availableElements = LevelsMap[level as keyof typeof LevelsMap]
   const allElements = {
