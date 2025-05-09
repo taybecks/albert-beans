@@ -65,22 +65,20 @@ function SecretSauce() {
   stirTheSauce();
 
   return (
-    <div>
-      <div className="grid grid-cols-4 gap-4">
-        {results && results.length > 0 && results.map((item, idx) => (
-          <div key={item.id ?? idx} style={{
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        padding: '16px',
-        background: '#fafafa',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
-          }}>
-            <div><strong>Jump:</strong> {item.type}</div>
-            <div><strong>ID:</strong> {item.id}</div>
-            <div><strong>Value:</strong> {item.value?.toFixed(2)}</div>
-          </div>
-        ))}
-      </div>
+    <div className="grid grid-cols-4 gap-4 w-full">
+      {results && results.length > 0 && results.map((item, idx) => (
+        <div key={item.id ?? idx} style={{
+      border: '1px solid #ccc',
+      borderRadius: '8px',
+      padding: '16px',
+      background: '#fafafa',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+        }}>
+          <div><strong>Jump:</strong> {item.type}</div>
+          <div><strong>ID:</strong> {item.id}</div>
+          <div><strong>Value:</strong> {item.value?.toFixed(2)}</div>
+        </div>
+      ))}
     </div>
   )
 
