@@ -23,7 +23,7 @@ export default function ElementsPage() {
   const selectedElementsMap = watch("selectedElements")
   const [activeTab, setActiveTab] = useState("jumps")
 
-  const allElements = []
+  const allElements = [] as any[]
   const jumpElements = availableElements.jumps
   const spinElements = availableElements.spins
   const stepElements = availableElements.other
@@ -42,7 +42,7 @@ export default function ElementsPage() {
       setSelectedElements(selectedElements.filter((id) => id !== elementId))
       setValue("selectedElements", {
         ...selectedElementsMap,
-        [type]: selectedElementsMap[type].filter((id) => id !== elementId),
+        [type]: selectedElementsMap[type].filter((id: string) => id !== elementId),
       })
     } else {
       setSelectedElements([...selectedElements, elementId])
@@ -57,7 +57,7 @@ export default function ElementsPage() {
     setSelectedElements(selectedElements.filter((id) => id !== elementId))
     setValue("selectedElements", {
       ...selectedElementsMap,
-      [type]: selectedElementsMap[type].filter((id) => id !== elementId),
+      [type]: selectedElementsMap[type].filter((id: string) => id !== elementId),
     })
   }
 

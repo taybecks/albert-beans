@@ -80,7 +80,7 @@ export default function ComfortPage() {
             {selectedElements.jumps.length === 0 ? (
               <p className="text-center text-gray-500 py-8">No jump elements selected</p>
             ) : (
-              selectedElements.jumps.map((elementId) => (
+              selectedElements.jumps.map((elementId: string) => (
                 <div key={elementId} className="border rounded-lg p-6">
                   <h3 className="text-lg font-medium mb-6">
                     {program.jumps[elementId as keyof typeof program.jumps]?.label}
@@ -106,7 +106,7 @@ export default function ComfortPage() {
             {selectedElements.spins.length === 0 ? (
               <p className="text-center text-gray-500 py-8">No spin elements selected</p>
             ) : (
-              selectedElements.spins.map((elementId) => (
+              selectedElements.spins.map((elementId: string) => (
                 <div key={elementId} className="border rounded-lg p-6">
                   <h3 className="text-lg font-medium mb-6">
                     {program.spins[elementId as keyof typeof program.spins]?.label}
@@ -132,7 +132,7 @@ export default function ComfortPage() {
             {selectedElements.steps.length === 0 ? (
               <p className="text-center text-gray-500 py-8">No step sequence elements selected</p>
             ) : (
-              selectedElements.steps.map((elementId) => (
+              selectedElements.steps.map((elementId: string) => (
                 <div key={elementId} className="border rounded-lg p-6">
                   <h3 className="text-lg font-medium mb-6">
                     {program.other[elementId as keyof typeof program.other]?.label}
