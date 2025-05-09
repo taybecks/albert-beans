@@ -6,6 +6,7 @@ import { ArrowLeft, Download, Mail } from "lucide-react"
 import Link from "next/link"
 import { ProgressBar } from "@components/progress-bar"
 import { useFormContext } from "react-hook-form"
+import SecretSauce from "@/app/components/SecretSauce"
 
 export default function ProgramPage() {
   const { watch } = useFormContext()
@@ -50,6 +51,7 @@ export default function ProgramPage() {
             <div className="text-2xl font-bold">{baseValue.toFixed(2)}</div>
           </div>
         </div>
+        <SecretSauce />
 
         <div className="mt-12 flex flex-col sm:flex-row gap-4">
           <Button onClick={handleDownloadPDF} className="bg-[#0f172a] px-6 flex items-center gap-2">

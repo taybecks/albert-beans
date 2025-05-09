@@ -1,6 +1,7 @@
 import React from 'react'
 import { PreBronze, JumpComboMap } from "../models/elements"; 
 import { Button } from '@mui/material'
+import { useFormContext } from 'react-hook-form'
 
 const jumpStarts = [
   'F',
@@ -14,38 +15,64 @@ const jumpStarts = [
 //   spins: [1, 1],
 //   jumpPasses: [3,2,1,1],
 // }
-const confidenceLevels = {
-  spins: {
-    'USp': 50,
-    'CUSp': 50,
-  },
-  jumps: {
-    '1HF': 100,
-    '1HLz': 100,
-    '1S': 90,
-    '1Lo':60,
-    '1Wz': 90,
-    '1T': 80,
-    '1F': 30,
-    '1Eu': 60,
-  } as { [key: string]: number }
-}
+// const confidenceLevels = {
+//   spins: {
+//     'USp': 50,
+//     'CUSp': 50,
+//   },
+//   jumps: {
+//     '1HF': 100,
+//     '1HLz': 100,
+//     '1S': 90,
+//     '1Lo':60,
+//     '1Wz': 90,
+//     '1T': 80,
+//     '1F': 30,
+//     '1Eu': 60,
+//   } as { [key: string]: number }
+// }
 
 function SecretSauce() {
+  const { getValues } = useFormContext();
   const [max, setMax] = React.useState(0);
   type JumpResult = { id: string; type: string; value: number };
   const [results, setResults] = React.useState<JumpResult[]>([]);
 
+  const comfort = getValues("comfortLevels");
+  const elements = getValues("selectedElements");
+
+  const confidenceLevels = {
+    jumps: {},
+    spins: {},
+    steps: {}
+  }
+  const jumps = elements.jumps;
+  const spins = elements.spins;
+  const steps = elements.steps;
+  jumps.forEach((jump: string) => {
+    const jumpConfidence = comfort[jump] ?? 0;
+    confidenceLevels.jumps[jump] = jumpConfidence;
+  })
+  spins.forEach((spin: string) => {
+    const spinConfidence = comfort[spin] ?? 0;
+    confidenceLevels.spins[spin] = spinConfidence;
+  })
+  steps.forEach((step: string) => {
+    const stepConfidence = comfort[step] ?? 0;
+    confidenceLevels.steps[step] = stepConfidence;
+  })
+  
+  stirTheSauce();
+
   return (
     <div>
-      <Button type="button" variant="contained" onClick={stirTheSauce}>Figure Out My Best Self</Button>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '24px' }}>
+      <div className="grid grid-cols-4 gap-4">
         {results && results.length > 0 && results.map((item, idx) => (
           <div key={item.id ?? idx} style={{
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            padding: '16px',
-            background: '#fafafa',
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+        padding: '16px',
+        background: '#fafafa',
             boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
           }}>
             <div><strong>Jump:</strong> {item.type}</div>
