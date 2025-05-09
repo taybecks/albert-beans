@@ -94,7 +94,7 @@ export default function ComfortPage() {
                       defaultValue={[comfortLevels[elementId] || 50]}
                       max={100}
                       step={1}
-                      onValueChange={(value) => handleComfortChange(elementId, value)}
+                      onValueChange={(value: number[]) => handleComfortChange(elementId, value)}
                     />
                   </div>
                 </div>
@@ -120,7 +120,7 @@ export default function ComfortPage() {
                       defaultValue={[comfortLevels[elementId] || 50]}
                       max={100}
                       step={1}
-                      onValueChange={(value) => handleComfortChange(elementId, value)}
+                      onValueChange={(value: number[]) => handleComfortChange(elementId, value)}
                     />
                   </div>
                 </div>
@@ -146,7 +146,7 @@ export default function ComfortPage() {
                       defaultValue={[comfortLevels[elementId] || 50]}
                       max={100}
                       step={1}
-                      onValueChange={(value) => handleComfortChange(elementId, value)}
+                      onValueChange={(value: number[]) => handleComfortChange(elementId, value)}
                     />
                   </div>
                 </div>

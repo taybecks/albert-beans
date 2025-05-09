@@ -84,9 +84,9 @@ export function TrainingHistory() {
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
-            <p className="text-gray-500 mb-4">You haven't recorded any training sessions yet.</p>
+            <p className="text-gray-500 mb-4">You haven&apos;t recorded any training sessions yet.</p>
             <p className="text-sm text-gray-500">
-              Use the "+" button in the bottom right corner to record a training session.
+              Use the &quot;+&quot; button in the bottom right corner to record a training session.
             </p>
           </div>
         </CardContent>

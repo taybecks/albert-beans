@@ -109,7 +109,7 @@ export default function ElementsPage() {
                       variant="ghost"
                       size="sm"
                       className="h-5 w-5 p-0 ml-1"
-                      onClick={() => handleRemoveElement(elementId)}
+                      onClick={() => handleRemoveElement(elementId, 'jumps')}
                     >
                       <X className="h-3 w-3" />
                       <span className="sr-only">Remove</span>

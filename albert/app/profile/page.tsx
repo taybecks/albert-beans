@@ -63,16 +63,32 @@ const mockTrainingPerformances: TrainingPerformanceData[] = [
     date: new Date("2024-05-01"),
     notes: "Felt good today, landed most jumps cleanly",
     elements: [
-      { id: "lutz", name: "Lutz", rating: 3 },
-      { id: "combo-spin", name: "Combination Spin", rating: 4 },
+      {
+        id: "lutz", name: "Lutz", rating: 3,
+        category: "",
+        created_at: ""
+      },
+      {
+        id: "combo-spin", name: "Combination Spin", rating: 4,
+        category: "",
+        created_at: ""
+      },
     ],
   },
   {
     date: new Date("2024-04-28"),
     notes: "Struggled with spins, jumps were okay",
     elements: [
-      { id: "lutz", name: "Lutz", rating: 2 },
-      { id: "combo-spin", name: "Combination Spin", rating: 1 },
+      {
+        id: "lutz", name: "Lutz", rating: 2,
+        category: "",
+        created_at: ""
+      },
+      {
+        id: "combo-spin", name: "Combination Spin", rating: 1,
+        category: "",
+        created_at: ""
+      },
     ],
   },
 ]
@@ -286,12 +302,12 @@ export default function ProfilePage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Your Past Programs</CardTitle>
-                  <CardDescription>View and manage programs you've created previously.</CardDescription>
+                  <CardDescription>View and manage programs you&apos;ve created previously.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {pastPrograms.length === 0 ? (
                     <div className="text-center py-8">
-                      <p className="text-gray-500 mb-4">You haven't created any programs yet.</p>
+                      <p className="text-gray-500 mb-4">You haven&apos;t created any programs yet.</p>
                       <Button onClick={() => router.push("/wizard/level")}>Create Your First Program</Button>
                     </div>
                   ) : (

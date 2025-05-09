@@ -42,9 +42,9 @@ function SecretSauce() {
   const elements = getValues("selectedElements");
 
   const confidenceLevels = {
-    jumps: {},
-    spins: {},
-    steps: {}
+    jumps: {} as { [key: string]: number },
+    spins: {} as { [key: string]: number },
+    steps: {} as { [key: string]: number }
   }
   const jumps = elements.jumps;
   const spins = elements.spins;

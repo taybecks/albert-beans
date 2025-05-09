@@ -218,7 +218,7 @@ export function TrainingPerformanceModal({ open, onOpenChange, onSave }: Trainin
         <Label className="text-base font-medium">{element.name}</Label>
         <RadioGroup
           value={element.rating === -1 ? undefined : element.rating.toString()}
-          onValueChange={(value) => handleRatingChange(element.id, value)}
+          onValueChange={(value: string) => handleRatingChange(element.id, value)}
         >
           <div className="grid grid-cols-5 gap-2">
             {[0, 1, 2, 3, 4].map((rating) => (
