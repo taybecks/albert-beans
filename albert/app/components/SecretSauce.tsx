@@ -42,7 +42,8 @@ function SecretSauce() {
     'S': 2,
     'T': 2,
     'Wz': 2,
-    'Eu': 2
+    'Eu': 2,
+    'A': 2
   }
   let max = 0;
   let bestSequence = [] as string[];
