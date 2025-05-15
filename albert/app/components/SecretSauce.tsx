@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { PreBronze, JumpComboMap } from "../models/elements"; 
+import { PreBronze, JumpComboMap, LevelsMap } from "../models/elements"; 
 import { Button } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import path from 'path';
 import { setMaxIdleHTTPParsers } from 'http';
 import { Layout } from 'lucide-react';
+import { computeFromManifest } from 'next/dist/build/utils';
 
 
 interface CalculatingProps {
@@ -34,7 +35,6 @@ const jumpStarts = [
 
 function SecretSauce() {
   const { getValues } = useFormContext();
-  const layout = [3,2,1,1]
   const budget = {
     'F': 2,
     'Lz': 2,
@@ -54,11 +54,14 @@ function SecretSauce() {
     jumps: []
   });
   const [loading, setLoading] = useState(true);
-  type JumpResult = { id: string; type: string; value: number };
-  const [results, setResults] = React.useState<JumpResult[]>([]);
 
   const comfort = getValues("comfortLevels");
-  const elements = getValues("selectedElements");
+  const level = getValues("level");
+
+  const program = LevelsMap[level as keyof typeof LevelsMap]
+  const layout = program.layout;
+  
+  const [myProgram, setMyProgram] = useState(program);
 
   const confidenceLevels = {
     jumps: {} as { [key: string]: number },
@@ -66,16 +69,14 @@ function SecretSauce() {
     steps: {} as { [key: string]: number }
   }
 
-  confidenceLevels.jumps = {
-    '1HF': 100,
-    '1HLz': 100,
-    '1S': 100,
-    '1Lo': 100,
-    '1Wz': 100,
-    '1T': 100,
-    '1F': 100,
-    '1Eu': 100
-  }
+  console.log(level, comfort, Object.keys(program.jumps))
+  Object.keys(program.jumps).forEach((key) => {
+    if (comfort[key]) {
+      confidenceLevels.jumps[key] = comfort[key]
+    } else {
+      confidenceLevels.jumps[key] = 0
+    }
+  })
   
   useEffect(() => {
     async function fetchData() {
@@ -116,7 +117,7 @@ function SecretSauce() {
                 {[...Array(item)].map((nothing, index) => {
                   jumpCount++;
                   const jumpId = best.jumps[jumpCount]
-                  const jumpData = PreBronze.jumps[jumpId]
+                  const jumpData = myProgram.jumps[jumpId]
 
                   return (
                   <div key={index} className="flex flex-col mb-2">
@@ -139,7 +140,7 @@ function SecretSauce() {
   async function stirTheSauce() {
     const subtotal = 0;
     const path = [] as string[];
-    const level = PreBronze.jumps
+    const level = myProgram.jumps
     const jumpValues: JumpMap = {}
     Object.keys(level).forEach((key) => {
       const confidence = confidenceLevels.jumps[key as string] ?? 0;

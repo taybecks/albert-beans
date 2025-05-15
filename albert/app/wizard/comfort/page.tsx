@@ -18,12 +18,6 @@ export default function ComfortPage() {
   const { getValues, setValue, watch } = useFormContext()
   const level = watch("level")
   const program = LevelsMap[level as keyof typeof LevelsMap]
-  const availableElements = LevelsMap[level as keyof typeof LevelsMap]
-  const allElements = {
-    jumps: availableElements.jumps,
-    spins: availableElements.spins,
-    steps: availableElements.other,
-  }
   const selectedElements = watch("selectedElements")
   const comfortLevels = watch("comfortLevels")
   const [activeTab, setActiveTab] = useState("jumps")

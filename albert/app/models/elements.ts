@@ -1,4 +1,5 @@
 export type Program = {
+  layout: number[];
   spins: {
     [key: string]: ProgramElement
   },
@@ -39,6 +40,7 @@ export const JumpComboMap: JumpMap = {
 }
 
 export const PreBronze: Program = {
+  layout: [3,2,1,1],
   spins: {
     '2FtUSp': {
       id: '2FtUSp',
@@ -142,7 +144,7 @@ export const PreBronze: Program = {
       id: '1Lo',
       label: 'Loop',
       value: [0.5],
-      type: 'L'
+      type: 'Lo'
     },
     '1Eu': {
       id: '1Eu',
@@ -159,7 +161,64 @@ export const PreBronze: Program = {
   },
   other: {}
 };
+export const Silver: Program = {
+  layout: [3,2,1,1,1],
+  spins: {
+  },
+  jumps: {
+    '1Wz': {
+      id: '1Wz',
+      label: 'Waltz',
+      value: [0.3],
+      type: 'Wz'
+    },
+    '1T': {
+      id: '1T',
+      label: 'Toe Loop',
+      value: [0.4],
+      type: 'T'
+    },
+    '1S': {
+      id: '1S',
+      label: 'Salchow',
+      value: [0.4],
+      type: 'S'
+    },
+    '1Lo': {
+      id: '1Lo',
+      label: 'Loop',
+      value: [0.5],
+      type: 'Lo'
+    },
+    '1Eu': {
+      id: '1Eu',
+      label: 'Euler',
+      value: [0.5],
+      type: 'Eu'
+    },
+    '1F': {
+      id: '1F',
+      label: 'Flip',
+      value: [0.5],
+      type: 'F'
+    },
+    '1A': {
+      id: '1A',
+      label: 'Axel',
+      value: [1.1],
+      type: 'A'
+    },
+    '1Lz': {
+      id: '1Lz',
+      label: 'Lutz',
+      value: [0.6],
+      type: 'Lz'
+    }
+  },
+  other: {}
+}
 
 export const LevelsMap = {
-  preBronze: PreBronze
+  preBronze: PreBronze,
+  silver: Silver
 };
