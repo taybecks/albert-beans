@@ -161,6 +161,68 @@ export const PreBronze: Program = {
   },
   other: {}
 };
+export const Bronze: Program = {
+  layout: [3,2,1,1],
+  spins: {
+  },
+  jumps: {
+    '1HF': {
+      id: '1HF',
+      label: 'Half Flip',
+      value: [0.3],
+      type: 'F'
+    },
+    '1HLz': {
+      id: '1HLz',
+      label: 'Half Lutz',
+      value: [0.3],
+      type: 'Lz'
+    },
+    '1Wz': {
+      id: '1Wz',
+      label: 'Waltz',
+      value: [0.3],
+      type: 'Wz'
+    },
+    '1T': {
+      id: '1T',
+      label: 'Toe Loop',
+      value: [0.4],
+      type: 'T'
+    },
+    '1S': {
+      id: '1S',
+      label: 'Salchow',
+      value: [0.4],
+      type: 'S'
+    },
+    '1Lo': {
+      id: '1Lo',
+      label: 'Loop',
+      value: [0.5],
+      type: 'Lo'
+    },
+    '1Eu': {
+      id: '1Eu',
+      label: 'Euler',
+      value: [0.5],
+      type: 'Eu'
+    },
+    '1F': {
+      id: '1F',
+      label: 'Flip',
+      value: [0.5],
+      type: 'F'
+    },
+    '1Lz': {
+      id: '1Lz',
+      label: 'Lutz',
+      value: [0.6],
+      type: 'Lz'
+    }
+  },
+  other: {}
+}
 export const Silver: Program = {
   layout: [3,2,1,1,1],
   spins: {
