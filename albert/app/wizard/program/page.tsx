@@ -9,16 +9,14 @@ import { useFormContext } from "react-hook-form"
 import SecretSauce from "@/app/components/SecretSauce"
 
 export default function ProgramPage() {
-  const { watch } = useFormContext()
-  const selectedElements = watch("selectedElements")
-  const comfortLevels = watch("comfortLevels")
-  const [programElements, setProgramElements] = useState<any[]>([])
-  const [baseValue, setBaseValue] = useState(0)
+  // const { watch } = useFormContext()
+  // const selectedElements = watch("selectedElements")
+  // const comfortLevels = watch("comfortLevels")
+  // const [programElements, setProgramElements] = useState<any[]>([])
+  // const [baseValue, setBaseValue] = useState(0)
 
-  console.log(selectedElements, comfortLevels)
-
-  function generateProgram() {
-  }
+  // function generateProgram() {
+  // }
 
   const handleDownloadPDF = () => {
     // In a real app, this would generate and download a PDF
@@ -44,13 +42,6 @@ export default function ProgramPage() {
       <main className="flex-1 flex flex-col items-center px-4 py-8 max-w-4xl mx-auto w-full">
         <h1 className="text-3xl font-bold mb-8 text-center">Your Program</h1>
 
-        <div className="w-full bg-gray-50 rounded-lg p-6 mb-8 flex justify-between items-center">
-          <h2 className="text-xl font-medium">Program Overview</h2>
-          <div className="text-right">
-            <div className="text-sm text-gray-500">Base Value</div>
-            <div className="text-2xl font-bold">{baseValue.toFixed(2)}</div>
-          </div>
-        </div>
         <SecretSauce />
 
         <div className="mt-12 flex flex-col sm:flex-row gap-4">

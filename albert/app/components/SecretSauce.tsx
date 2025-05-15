@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { PreBronze, JumpComboMap } from "../models/elements"; 
 import { Button } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
+import path from 'path';
+import { setMaxIdleHTTPParsers } from 'http';
+import { Layout } from 'lucide-react';
+
+
+interface CalculatingProps {
+  layout: number[];
+  jumpValues: { [key: string]: { id: string; label: string; type: string; value: number } };
+  budget: { [key: string]: number };
+  path: string[];
+  subtotal: number;
+  totalJumps: number;
+}
+interface JumpMap { [key: string]: Jump }
+interface Jump {
+  id: string;
+  label: string;
+  type: string;
+  value: number;
+}
 
 const jumpStarts = [
   'F',
@@ -11,30 +31,29 @@ const jumpStarts = [
   'T',
   'Wz'
 ]
-// const program = {
-//   spins: [1, 1],
-//   jumpPasses: [3,2,1,1],
-// }
-// const confidenceLevels = {
-//   spins: {
-//     'USp': 50,
-//     'CUSp': 50,
-//   },
-//   jumps: {
-//     '1HF': 100,
-//     '1HLz': 100,
-//     '1S': 90,
-//     '1Lo':60,
-//     '1Wz': 90,
-//     '1T': 80,
-//     '1F': 30,
-//     '1Eu': 60,
-//   } as { [key: string]: number }
-// }
 
 function SecretSauce() {
   const { getValues } = useFormContext();
-  const [max, setMax] = React.useState(0);
+  const layout = [3,2,1,1]
+  const budget = {
+    'F': 2,
+    'Lz': 2,
+    'Lo': 2,
+    'S': 2,
+    'T': 2,
+    'Wz': 2,
+    'Eu': 2
+  }
+  let max = 0;
+  let bestSequence = [] as string[];
+  const [best, setBest] = useState<{
+    score: number;
+    jumps: string[];
+  }>({
+    score: 0,
+    jumps: []
+  });
+  const [loading, setLoading] = useState(true);
   type JumpResult = { id: string; type: string; value: number };
   const [results, setResults] = React.useState<JumpResult[]>([]);
 
@@ -46,124 +65,184 @@ function SecretSauce() {
     spins: {} as { [key: string]: number },
     steps: {} as { [key: string]: number }
   }
-  const jumps = elements.jumps;
-  const spins = elements.spins;
-  const steps = elements.steps;
-  jumps.forEach((jump: string) => {
-    const jumpConfidence = comfort[jump] ?? 0;
-    confidenceLevels.jumps[jump] = jumpConfidence;
-  })
-  spins.forEach((spin: string) => {
-    const spinConfidence = comfort[spin] ?? 0;
-    confidenceLevels.spins[spin] = spinConfidence;
-  })
-  steps.forEach((step: string) => {
-    const stepConfidence = comfort[step] ?? 0;
-    confidenceLevels.steps[step] = stepConfidence;
-  })
-  
-  stirTheSauce();
 
+  confidenceLevels.jumps = {
+    '1HF': 100,
+    '1HLz': 100,
+    '1S': 100,
+    '1Lo': 100,
+    '1Wz': 100,
+    '1T': 100,
+    '1F': 100,
+    '1Eu': 100
+  }
+  
+  useEffect(() => {
+    async function fetchData() {
+      await stirTheSauce()
+      setBest({
+        score: max,
+        jumps: bestSequence,
+      })
+      setLoading(false)
+    }
+
+    fetchData()
+  }, []);
+
+  if (loading) {
+    return <div>Calculating...</div>
+  }
   return (
-    <div className="grid grid-cols-4 gap-4 w-full">
-      {results && results.length > 0 && results.map((item, idx) => (
-        <div key={item.id ?? idx} style={{
-      border: '1px solid #ccc',
-      borderRadius: '8px',
-      padding: '16px',
-      background: '#fafafa',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
-        }}>
-          <div><strong>Jump:</strong> {item.type}</div>
-          <div><strong>ID:</strong> {item.id}</div>
-          <div><strong>Value:</strong> {item.value?.toFixed(2)}</div>
-        </div>
-      ))}
+    <div>
+      <div className="w-full bg-gray-50 rounded-lg p-6 mb-8 flex justify-between items-center">
+            <h2 className="text-xl font-medium">Program Overview</h2>
+            <div className="text-right">
+              <div className="text-sm text-gray-500">Projected Base Value</div>
+              <div className="text-2xl font-bold">{best.score}</div>
+            </div>
+          </div>
+      <div className="grid grid-cols-4 gap-4 w-full">
+        {
+          layout.map((item, idx) => {
+            let jumpCount = -1;
+            if (idx > 0) {
+              for(let i = 0; i < idx; i++) {
+                jumpCount += layout[i];
+              }
+            }
+            return (
+              <div key={idx} className="p-4 border border-gray-200 rounded-lg bg-gray-50 shadow-sm">
+                {[...Array(item)].map((nothing, index) => {
+                  jumpCount++;
+                  const jumpId = best.jumps[jumpCount]
+                  const jumpData = PreBronze.jumps[jumpId]
+
+                  return (
+                  <div key={index} className="flex flex-col mb-2">
+                    <div className="p-2 bg-white rounded shadow">
+                      <p className="text-lg font-semibold">{jumpData.label}</p>
+                      <p className="text-sm text-gray-500">Type: {jumpData.type}</p>
+                      <p className="text-sm text-gray-500">Value: {jumpData.value}</p>
+                      <p className="text-sm text-gray-500">Confidence: {confidenceLevels.jumps[jumpId]}%</p>
+                    </div>
+                  </div>
+                )})}
+              </div>
+            )
+          })
+        }
+      </div>
     </div>
   )
 
-  function stirTheSauce() {
-    const jumpValues = getJumpValues();
-    const availableJumps: JumpResult[] = []
-    jumpStarts.forEach(jump => {
-      availableJumps.push(...getJumpValueByType(jump, jumpValues));
-    })
-    const jumpBudget = {
-      'F': 2,
-      'Lz': 2,
-      'Lo': 2,
-      'S': 2,
-      'T': 2,
-      'Wz': 2,
-      'Eu': 2
-    }
-
-    calcJumps({ availableJumps, jumpBudget, jumpValues, path: [], subtotal: 0 })
-  }
-
-  interface jumpProps {
-    availableJumps: JumpResult[],
-    jumpBudget: { [key: string]: number },
-    jumpValues: { [key: string]: { type: string; value: number } },
-    path: JumpResult[],
-    subtotal: number
-  }
-  function calcJumps({availableJumps, jumpBudget, jumpValues, path, subtotal}: jumpProps) {
-    if (path.length === 7) {
-      if (subtotal > max) {
-        console.log(subtotal, path)
-        setMax(subtotal);
-        setResults(path)
-
-        return
-      }
-    } else {
-      availableJumps.forEach(jump => {
-        jumpBudget[jump.type] -= 1;
-
-        const nextAvailableTypes = JumpComboMap[jump.type].filter(j => jumpBudget[j] > 0);
-        const nextAvailableJumps: JumpResult[] = [];
-        nextAvailableTypes.forEach(j => {
-          nextAvailableJumps.push(...getJumpValueByType(j, jumpValues));
-        });
-
-        const nextPath = [...path];
-        nextPath.push(jump);
-        subtotal += jumpValues[jump.id].value;
-
-        calcJumps({ availableJumps: nextAvailableJumps, jumpBudget, jumpValues, path: nextPath, subtotal });
-      })
-    }
-  }
-
-  function getJumpValues() {
-    const allJumps = PreBronze.jumps;
-    const jumpValues: { [key: string]: { type: string; value: number } } = {};
-    Object.keys(allJumps).forEach(jump => {
-      const confidence = confidenceLevels.jumps[jump as string] ?? 0;
-      jumpValues[jump] = {
-        type: allJumps[jump].type,
-        value: allJumps[jump].value[0] * (confidence / 100)
-      }
-    })
-
-    return jumpValues
-  }
-
-  function getJumpValueByType(type: string, jumpValues: { [key: string]: { type: string; value: number } }) {
-    const results: JumpResult[] = [];
-    Object.keys(jumpValues).forEach(j => {
-      const jump = jumpValues[j];
-      if(jump.type === type) {
-        results.push({
-          id: j,
-          type: jump.type,
-          value: jump.value
-        })
+  async function stirTheSauce() {
+    const subtotal = 0;
+    const path = [] as string[];
+    const level = PreBronze.jumps
+    const jumpValues: JumpMap = {}
+    Object.keys(level).forEach((key) => {
+      const confidence = confidenceLevels.jumps[key as string] ?? 0;
+      jumpValues[key] = {
+        id: key,
+        label: level[key].label,
+        type: level[key].type,
+        value: level[key].value[0] * (confidence / 100)
       }
     });
-    return results;
+
+    const totalJumps = layout.reduce((acc, val) => acc + val, 0);
+    await calcJumps({ layout, jumpValues, budget, path, subtotal, totalJumps });
   }
+  
+  async function calcJumps ({layout, jumpValues, budget, path, subtotal, totalJumps}: CalculatingProps ) {
+    const jumpIndex = path.length
+    if (jumpIndex === totalJumps) {
+      //console.log(subtotal, path)
+      if (subtotal > max) {
+        max = subtotal 
+        bestSequence = path
+        console.log('New best sequence:', path, 'with value:', subtotal)
+      }
+      return;
+    }
+
+    // simulate promise
+    await new Promise(resolve => setTimeout(resolve, 5))
+     
+    const jumpType = getJumpType(layout, jumpIndex)
+    let previousJump = null
+    if (jumpType !== 'first') {
+      previousJump = jumpValues[path[jumpIndex - 1]]
+    }
+    const availableJumps = getAvailableJumps(jumpType, previousJump, budget)
+
+    // loop over available jumps and recurse
+    const nextJumps: JumpMap = {}
+    Object.entries(jumpValues).filter(([id, value]) => {
+      if(availableJumps.includes(value.type)) {
+        nextJumps[id] = value
+      }
+    })
+
+    for await(const j of Object.keys(nextJumps)) {
+      const jump = nextJumps[j]
+      const newBudget = { ...budget }
+      newBudget[jump.type]--;
+      const newSubTotal = subtotal + jump.value;
+      const newPath = [...path, jump.id]
+
+      await calcJumps({ layout, jumpValues, budget: newBudget, path: newPath, subtotal: newSubTotal, totalJumps })
+    }
+  }
+
+  function getAvailableJumps (jumpType: string, previousJump: Jump | null, budget: { [x: string]: number; }) {
+    const availableJumps = [] as string[];
+
+    if (previousJump) {
+      const nextPossible = JumpComboMap[previousJump.type]
+      nextPossible.forEach((j) => {
+        if (budget[j] > 0) {
+          if (j === 'Eu') {
+            if (jumpType === 'middle') {
+              availableJumps.push(j)
+            }
+          } else {
+            availableJumps.push(j)
+          }
+        }
+      })
+    } else {
+      // first jump
+      jumpStarts.forEach((j) => {
+        if (budget[j] > 0) {
+          availableJumps.push(j)
+        }
+      })
+    }
+    
+    return availableJumps;
+  }
+
+  function getJumpType (layout: any[], jumpNumber: number) {
+    let steps = 0;
+    let jumpType = 'standard';
+    layout.forEach((passSize) => {
+      for (let i = 0; i < passSize; i++) {
+        if (steps === jumpNumber) {
+          if (passSize === 3 && i === 1) {
+            jumpType = 'middle'
+          } else if (i === 0) {
+            jumpType = 'first'
+          }
+        }
+        steps++;
+      }
+    })
+
+    return jumpType;
+  }
+
 }
 
 export default SecretSauce
