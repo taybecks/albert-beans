@@ -87,10 +87,10 @@ export default function ElementsPage() {
       <ProgressBar currentStep={2} totalSteps={4} />
 
       <main className="flex-1 flex flex-col items-center px-4 py-8 max-w-4xl mx-auto w-full">
-        <h1 className="text-3xl font-bold mb-8 text-center">Select Your Elements</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center gradient-text">Select Your Elements</h1>
 
         <Tabs defaultValue="jumps" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="grid w-full grid-cols-3 mb-8 bg-pink-100 rounded-full">
             <TabsTrigger value="jumps">Jumps</TabsTrigger>
             <TabsTrigger value="spins">Spins</TabsTrigger>
             <TabsTrigger value="steps">Step Sequences</TabsTrigger>
@@ -121,53 +121,71 @@ export default function ElementsPage() {
           </div>
 
           <TabsContent value="jumps" className="mt-0">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {Object.keys(jumpElements).map((elementId) => (
-                <Button
-                  key={elementId}
-                  variant={selectedElements.includes(elementId) ? "default" : "outline"}
-                  className={selectedElements.includes(elementId) ? "bg-[#0f172a]" : ""}
-                  onClick={() => handleElementToggle(elementId, 'jumps')}
-                >
-                  {jumpElements[elementId].label}
-                </Button>
-              ))}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {Object.keys(jumpElements).map((elementId) => {
+                const isSelected = selectedElements.includes(elementId);
+                return (
+                  <Button
+                    key={elementId}
+                    className={
+                      isSelected
+                        ? "btn-gradient selected ring-2 ring-pink-400 text-white px-8 py-3"
+                        : "btn-outline-neutral px-8 py-3"
+                    }
+                    onClick={() => handleElementToggle(elementId, 'jumps')}
+                  >
+                    {jumpElements[elementId].label}
+                  </Button>
+                );
+              })}
             </div>
           </TabsContent>
 
           <TabsContent value="spins" className="mt-0">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {Object.keys(spinElements).map((elementId) => (
-                <Button
-                  key={elementId}
-                  variant={selectedElements.includes(elementId) ? "default" : "outline"}
-                  className={selectedElements.includes(elementId) ? "bg-[#0f172a]" : ""}
-                  onClick={() => handleElementToggle(elementId, 'spins')}
-                >
-                  {spinElements[elementId].label}
-                </Button>
-              ))}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {Object.keys(spinElements).map((elementId) => {
+                const isSelected = selectedElements.includes(elementId);
+                return (
+                  <Button
+                    key={elementId}
+                    className={
+                      isSelected
+                        ? "btn-gradient selected ring-2 ring-pink-400 text-white px-8 py-3"
+                        : "btn-outline-neutral px-8 py-3"
+                    }
+                    onClick={() => handleElementToggle(elementId, 'spins')}
+                  >
+                    {spinElements[elementId].label}
+                  </Button>
+                );
+              })}
             </div>
           </TabsContent>
 
           <TabsContent value="steps" className="mt-0">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {Object.keys(stepElements).map((elementId) => (
-                <Button
-                  key={elementId}
-                  variant={selectedElements.includes(elementId) ? "default" : "outline"}
-                  className={selectedElements.includes(elementId) ? "bg-[#0f172a]" : ""}
-                  onClick={() => handleElementToggle(elementId, 'steps')}
-                >
-                  {stepElements[elementId].label}
-                </Button>
-              ))}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {Object.keys(stepElements).map((elementId) => {
+                const isSelected = selectedElements.includes(elementId);
+                return (
+                  <Button
+                    key={elementId}
+                    className={
+                      isSelected
+                        ? "btn-gradient selected ring-2 ring-pink-400 text-white px-8 py-3"
+                        : "btn-outline-neutral px-8 py-3"
+                    }
+                    onClick={() => handleElementToggle(elementId, 'steps')}
+                  >
+                    {stepElements[elementId].label}
+                  </Button>
+                );
+              })}
             </div>
           </TabsContent>
         </Tabs>
 
-        <div className="mt-8">
-          <Button onClick={handleContinue} disabled={selectedElements.length === 0} className="bg-[#0f172a] px-8">
+        <div className="mt-12">
+          <Button onClick={handleContinue} className="btn-gradient px-12 py-5 text-lg font-bold">
             Continue <span className="ml-2">→</span>
           </Button>
         </div>
