@@ -82,22 +82,22 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #fff5f7;
+  --background: #fff;
   --foreground: #4a4a4a;
   --card: #ffffff;
   --card-foreground: #4a4a4a;
   --popover: #ffffff;
   --popover-foreground: #4a4a4a;
-  --primary: #ffb6c1;
+  --primary: #ff8fcf;
   --primary-foreground: #ffffff;
-  --secondary: #ffd1dc;
+  --secondary: #e0c3fc;
   --secondary-foreground: #4a4a4a;
   --muted: #f8e8eb;
   --muted-foreground: #9ca3af;
   --accent: #ffc0cb;
   --accent-foreground: #4a4a4a;
   --destructive: #ff6b6b;
-  --border: #ffd1dc;
+  --border: #ffe4f3;
   --input: #ffd1dc;
   --ring: #ffb6c1;
   --chart-1: #ffb6c1;
@@ -119,9 +119,20 @@
   --color-pink-dark: #ff8fcf;
   --color-purple: #e0c3fc;
   --color-purple-dark: #b388ff;
-  --color-gradient: linear-gradient(90deg, #ff8fcf 0%, #e0c3fc 100%);
+  --color-gradient: linear-gradient(90deg, #e0c3fc 0%, #ff8fcf 100%);
   --color-card: #fff6fa;
   --color-shadow: 0 4px 24px 0 rgba(255, 143, 207, 0.08);
+  --color-primary: #ff8fcf;
+  --color-secondary: #e0c3fc;
+  --color-text: #d14fa2;
+  --color-text-light: #e09ec3;
+  --color-hover: #ffe4f3;
+  --color-focus: #ffe4f3;
+  --color-disabled: #ffe4f3;
+  --color-error: #ff8fcf;
+  --color-success: #e0c3fc;
+  --color-warning: #ffd1e3;
+  --color-info: #e0c3fc;
 }
 
 .dark {
@@ -243,4 +254,164 @@
   background: var(--color-gradient);
   color: #fff;
   border: none;
+}
+
+/* Update form elements */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="time"],
+input[type="color"],
+select,
+textarea {
+  background-color: #fff;
+  border: 2px solid #ffe4f3;
+  color: #d14fa2;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="date"]:focus,
+input[type="datetime-local"]:focus,
+input[type="month"]:focus,
+input[type="week"]:focus,
+input[type="time"]:focus,
+input[type="color"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #d14fa2;
+  box-shadow: 0 0 0 2px #ffe4f3;
+}
+
+/* Update disabled states */
+input:disabled,
+select:disabled,
+textarea:disabled,
+button:disabled {
+  background-color: #ffe4f3;
+  border-color: #ffe4f3;
+  color: #e09ec3;
+}
+
+/* Update focus states */
+*:focus-visible {
+  outline: 2px solid #d14fa2;
+  outline-offset: 2px;
+}
+
+/* Update selection background */
+::selection {
+  background-color: #ffe4f3;
+  color: #d14fa2;
+}
+
+/* Update scrollbar */
+::-webkit-scrollbar-thumb {
+  background-color: #ffe4f3;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+
+/* Update any remaining gray backgrounds */
+.bg-gray-100,
+.bg-gray-50,
+.bg-gray-200 {
+  background-color: #ffe4f3 !important;
+}
+
+/* Update borders */
+.border-gray-200,
+.border-gray-100 {
+  border-color: #ffe4f3 !important;
+}
+
+/* Update text colors */
+.text-gray-500,
+.text-gray-400 {
+  color: #e09ec3 !important;
+}
+
+.text-gray-600,
+.text-gray-700 {
+  color: #d14fa2 !important;
+}
+
+/* Update hover states */
+.hover\:bg-gray-100:hover,
+.hover\:bg-gray-50:hover {
+  background-color: #ffe4f3 !important;
+}
+
+/* Update focus states */
+.focus\:bg-gray-100:focus,
+.focus\:bg-gray-50:focus {
+  background-color: #ffe4f3 !important;
+}
+
+/* Update active states */
+.active\:bg-gray-100:active,
+.active\:bg-gray-50:active {
+  background-color: #ffe4f3 !important;
+}
+
+/* Update disabled states */
+.disabled\:bg-gray-100:disabled,
+.disabled\:bg-gray-50:disabled {
+  background-color: #ffe4f3 !important;
+}
+
+/* Update placeholder text */
+::placeholder {
+  color: #e09ec3 !important;
+}
+
+/* Update any remaining gray backgrounds in components */
+[class*="bg-gray"] {
+  background-color: #ffe4f3 !important;
+}
+
+/* Update any remaining gray borders in components */
+[class*="border-gray"] {
+  border-color: #ffe4f3 !important;
+}
+
+/* Update any remaining gray text in components */
+[class*="text-gray"] {
+  color: #d14fa2 !important;
+}
+
+/* Update any remaining gray hover states in components */
+[class*="hover:bg-gray"]:hover {
+  background-color: #ffe4f3 !important;
+}
+
+/* Update any remaining gray focus states in components */
+[class*="focus:bg-gray"]:focus {
+  background-color: #ffe4f3 !important;
+}
+
+/* Update any remaining gray active states in components */
+[class*="active:bg-gray"]:active {
+  background-color: #ffe4f3 !important;
+}
+
+/* Update any remaining gray disabled states in components */
+[class*="disabled:bg-gray"]:disabled {
+  background-color: #ffe4f3 !important;
 }
