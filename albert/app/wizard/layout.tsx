@@ -21,7 +21,7 @@ export default function WizardLayout({
 
   return (
     <FormProvider {...methods}>
-      <div className="min-h-screen p-4">
+      <div className="min-h-screen p-8 bg-white font-sans">
         {children}
       </div>
     </FormProvider>

@@ -61,10 +61,10 @@ export default function ComfortPage() {
       <ProgressBar currentStep={3} totalSteps={4} />
 
       <main className="flex-1 flex flex-col items-center px-4 py-8 max-w-4xl mx-auto w-full">
-        <h1 className="text-3xl font-bold mb-8 text-center">Rate Your Comfort Level</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center gradient-text">Rate Your Comfort Level</h1>
 
         <Tabs defaultValue="jumps" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="grid w-full grid-cols-3 mb-8 bg-pink-100 rounded-full">
             <TabsTrigger value="jumps">Jumps</TabsTrigger>
             <TabsTrigger value="spins">Spins</TabsTrigger>
             <TabsTrigger value="steps">Step Sequences</TabsTrigger>
@@ -72,15 +72,15 @@ export default function ComfortPage() {
 
           <TabsContent value="jumps" className="mt-0 space-y-8">
             {selectedElements.jumps.length === 0 ? (
-              <p className="text-center text-gray-500 py-8">No jump elements selected</p>
+              <p className="text-center text-pink-400 py-8">No jump elements selected</p>
             ) : (
               selectedElements.jumps.map((elementId: string) => (
-                <div key={elementId} className="border rounded-lg p-6">
-                  <h3 className="text-lg font-medium mb-6">
+                <div key={elementId} className="card">
+                  <h3 className="text-lg font-medium mb-6 gradient-text">
                     {program.jumps[elementId as keyof typeof program.jumps]?.label}
                   </h3>
                   <div className="px-4">
-                    <div className="flex justify-between mb-2 text-sm text-gray-500">
+                    <div className="flex justify-between mb-2 text-sm text-pink-400">
                       <span>Less comfortable</span>
                       <span>More comfortable</span>
                     </div>
@@ -98,15 +98,15 @@ export default function ComfortPage() {
 
           <TabsContent value="spins" className="mt-0 space-y-8">
             {selectedElements.spins.length === 0 ? (
-              <p className="text-center text-gray-500 py-8">No spin elements selected</p>
+              <p className="text-center text-pink-400 py-8">No spin elements selected</p>
             ) : (
               selectedElements.spins.map((elementId: string) => (
-                <div key={elementId} className="border rounded-lg p-6">
-                  <h3 className="text-lg font-medium mb-6">
+                <div key={elementId} className="card">
+                  <h3 className="text-lg font-medium mb-6 gradient-text">
                     {program.spins[elementId as keyof typeof program.spins]?.label}
                   </h3>
                   <div className="px-4">
-                    <div className="flex justify-between mb-2 text-sm text-gray-500">
+                    <div className="flex justify-between mb-2 text-sm text-pink-400">
                       <span>Less comfortable</span>
                       <span>More comfortable</span>
                     </div>
@@ -124,15 +124,15 @@ export default function ComfortPage() {
 
           <TabsContent value="steps" className="mt-0 space-y-8">
             {selectedElements.steps.length === 0 ? (
-              <p className="text-center text-gray-500 py-8">No step sequence elements selected</p>
+              <p className="text-center text-pink-400 py-8">No step sequence elements selected</p>
             ) : (
               selectedElements.steps.map((elementId: string) => (
-                <div key={elementId} className="border rounded-lg p-6">
-                  <h3 className="text-lg font-medium mb-6">
+                <div key={elementId} className="card">
+                  <h3 className="text-lg font-medium mb-6 gradient-text">
                     {program.other[elementId as keyof typeof program.other]?.label}
                   </h3>
                   <div className="px-4">
-                    <div className="flex justify-between mb-2 text-sm text-gray-500">
+                    <div className="flex justify-between mb-2 text-sm text-pink-400">
                       <span>Less comfortable</span>
                       <span>More comfortable</span>
                     </div>
@@ -153,7 +153,7 @@ export default function ComfortPage() {
           <Button
             onClick={handleGenerateProgram}
             disabled={selectedElements.length === 0}
-            className="bg-[#0f172a] px-8"
+            className="btn-gradient px-8 py-2 text-lg"
           >
             Generate Program <span className="ml-2">→</span>
           </Button>

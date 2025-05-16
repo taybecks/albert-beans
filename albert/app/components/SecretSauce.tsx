@@ -6,6 +6,7 @@ import path from 'path';
 import { setMaxIdleHTTPParsers } from 'http';
 import { Layout } from 'lucide-react';
 import { computeFromManifest } from 'next/dist/build/utils';
+import Image from 'next/image';
 
 
 interface CalculatingProps {
@@ -93,7 +94,17 @@ function SecretSauce() {
   }, []);
 
   if (loading) {
-    return <div>Calculating...</div>
+    return (
+      <div className="flex justify-center items-center">
+        <Image
+          src="/programPixieLoading.gif"
+          alt="Loading..."
+          width={200}
+          height={200}
+          className="object-contain max-h-[200px]"
+        />
+      </div>
+    )
   }
   return (
     <div>

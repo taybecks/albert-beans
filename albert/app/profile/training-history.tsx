@@ -63,13 +63,13 @@ export function TrainingHistory() {
 
   if (isLoading) {
     return (
-      <Card>
+      <Card className="card">
         <CardHeader>
-          <CardTitle>Training Performance</CardTitle>
+          <CardTitle className="gradient-text">Training Performance</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
-            <p className="text-gray-500">Loading training sessions...</p>
+            <p className="text-pink-400">Loading training sessions...</p>
           </div>
         </CardContent>
       </Card>
@@ -78,14 +78,14 @@ export function TrainingHistory() {
 
   if (performances.length === 0) {
     return (
-      <Card>
+      <Card className="card">
         <CardHeader>
-          <CardTitle>Training Performance</CardTitle>
+          <CardTitle className="gradient-text">Training Performance</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
-            <p className="text-gray-500 mb-4">You haven&apos;t recorded any training sessions yet.</p>
-            <p className="text-sm text-gray-500">
+            <p className="text-pink-400 mb-4">You haven&apos;t recorded any training sessions yet.</p>
+            <p className="text-sm text-pink-400">
               Use the &quot;+&quot; button in the bottom right corner to record a training session.
             </p>
           </div>
@@ -95,20 +95,20 @@ export function TrainingHistory() {
   }
 
   return (
-    <Card>
+    <Card className="card">
       <CardHeader>
-        <CardTitle>Training Performance</CardTitle>
+        <CardTitle className="gradient-text">Training Performance</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
           {performances.map((session) => (
-            <div key={session.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div key={session.id} className="bg-pink-50 rounded-xl p-4 hover:shadow-lg transition-shadow">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
                 <div>
-                  <h3 className="font-medium text-lg">
+                  <h3 className="font-medium text-lg gradient-text">
                     Training Session - {new Date(session.date).toLocaleDateString()}
                   </h3>
-                  {session.notes && <p className="text-sm text-gray-600 mt-1">{session.notes}</p>}
+                  {session.notes && <p className="text-sm text-pink-700 mt-1">{session.notes}</p>}
                 </div>
               </div>
 

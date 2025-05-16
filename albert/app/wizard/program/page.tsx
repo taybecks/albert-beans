@@ -40,17 +40,19 @@ export default function ProgramPage() {
       <ProgressBar currentStep={4} totalSteps={4} />
 
       <main className="flex-1 flex flex-col items-center px-4 py-8 max-w-4xl mx-auto w-full">
-        <h1 className="text-3xl font-bold mb-8 text-center">Your Program</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center gradient-text">Your Program</h1>
 
-        <SecretSauce />
+        <div className="card w-full mb-8">
+          <SecretSauce />
+        </div>
 
         <div className="mt-12 flex flex-col sm:flex-row gap-4">
-          <Button onClick={handleDownloadPDF} className="bg-[#0f172a] px-6 flex items-center gap-2">
+          <Button onClick={handleDownloadPDF} className="btn-gradient px-6 py-2 flex items-center gap-2 text-lg">
             <Download className="h-4 w-4" />
             Download PDF
           </Button>
 
-          <Button onClick={handleEmailToCoach} variant="outline" className="px-6 flex items-center gap-2">
+          <Button onClick={handleEmailToCoach} variant="outline" className="btn-gradient px-6 py-2 flex items-center gap-2 text-lg">
             <Mail className="h-4 w-4" />
             Email to Coach
           </Button>

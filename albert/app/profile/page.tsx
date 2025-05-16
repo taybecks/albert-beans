@@ -299,49 +299,30 @@ export default function ProfilePage() {
             </TabsContent>
 
             <TabsContent value="programs" className="mt-0">
-              <Card>
+              <Card className="card">
                 <CardHeader>
-                  <CardTitle>Your Past Programs</CardTitle>
+                  <CardTitle className="gradient-text">Your Past Programs</CardTitle>
                   <CardDescription>View and manage programs you&apos;ve created previously.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {pastPrograms.length === 0 ? (
                     <div className="text-center py-8">
-                      <p className="text-gray-500 mb-4">You haven&apos;t created any programs yet.</p>
-                      <Button onClick={() => router.push("/wizard/level")}>Create Your First Program</Button>
+                      <p className="text-pink-400 mb-4">You haven&apos;t created any programs yet.</p>
+                      <Button onClick={() => router.push("/wizard/level")}
+                        className="btn-gradient px-8 py-2 text-lg">Create Your First Program</Button>
                     </div>
                   ) : (
                     <div className="space-y-6">
                       {pastPrograms.map((program) => (
-                        <div key={program.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div key={program.id} className="card hover:shadow-lg transition-shadow">
                           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
                             <div>
-                              <h3 className="font-medium text-lg">{program.name}</h3>
-                              <div className="flex flex-col sm:flex-row sm:gap-4 text-sm text-gray-500">
-                                <span>Created: {new Date(program.date).toLocaleDateString()}</span>
-                                <span>Level: {program.level}</span>
-                                <span>Base Value: {program.baseValue.toFixed(2)}</span>
-                              </div>
+                              <h3 className="font-medium text-lg gradient-text">{program.name}</h3>
+                              <p className="text-pink-700 text-sm mt-1">{program.date} • {program.level}</p>
                             </div>
                             <div className="flex gap-2 mt-2 md:mt-0">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleViewProgram(program.id)}
-                                className="flex items-center gap-1"
-                              >
-                                <Eye className="h-4 w-4" />
-                                <span className="hidden sm:inline">View</span>
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleEditProgram(program.id)}
-                                className="flex items-center gap-1"
-                              >
-                                <Edit className="h-4 w-4" />
-                                <span className="hidden sm:inline">Edit</span>
-                              </Button>
+                              <Button size="sm" className="btn-gradient">View</Button>
+                              <Button size="sm" className="btn-gradient">Edit</Button>
                               <Button
                                 variant="outline"
                                 size="sm"
@@ -353,10 +334,9 @@ export default function ProfilePage() {
                               </Button>
                             </div>
                           </div>
-
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-sm">
                             {program.elements.map((element, index) => (
-                              <div key={index} className="bg-gray-50 p-2 rounded flex justify-between">
+                              <div key={index} className="bg-pink-50 p-2 rounded flex justify-between">
                                 <span>{element.name}</span>
                                 <span className="font-medium">{element.value.toFixed(1)}</span>
                               </div>
@@ -368,7 +348,7 @@ export default function ProfilePage() {
                   )}
                 </CardContent>
                 <CardFooter>
-                  <Button onClick={() => router.push("/wizard/level")} className="w-full bg-[#0f172a]">
+                  <Button onClick={() => router.push("/wizard/level")} className="w-full btn-gradient">
                     Create New Program <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardFooter>
